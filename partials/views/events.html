@@ -1,3 +1,6 @@
+<HEAD>
+<META HTTP-EQUIV="refresh" CONTENT="20">
+</HEAD>
 <ng-include src="partialsPath + '/navbar.html'"></ng-include>
 <ng-include src="partialsPath + '/sidebar.html'"></ng-include>
 <div class="container-fluid clients">
@@ -11,22 +14,6 @@
               <!--title-->
               <ng-include src="partialsPath + '/panel/breadcrumb.html'"></ng-include>
             </div>
-            <div class="col-xs-12 nopadding">
-              <!--dc-->
-              <ng-include src="partialsPath + '/panel/dc.html'"></ng-include>
-              <!--actions-->
-              <panel-actions data="events" resolve-fn="resolveEvents" resolve-legend="Resolve" silence-fn="silenceEvents" ng-if="!user.isReadOnly()"></panel-actions>
-              <!--hide-->
-              <ng-include src="partialsPath + '/panel/hide.html'"></ng-include>
-              <!--checks-->
-              <ng-include src="partialsPath + '/panel/check.html'"></ng-include>
-              <!--status-->
-              <ng-include src="partialsPath + '/panel/status.html'"></ng-include>
-              <!--limit-->
-              <panel-limit data="events" filters="filters" permalink="permalink"></panel-limit>
-              <!--search-->
-              <ng-include src="partialsPath + '/panel/search.html'"></ng-include>
-            </div>
           </div>
         </div>
         <!--panel-body-->
@@ -37,12 +24,16 @@
                 <th ng-class="user.isReadOnly() ? 'col-min-ro' : 'col-min'">
                   <input type="checkbox" ng-model="selected.all" ng-change="selectAll(filtered, selected)"  ng-if="!user.isReadOnly()"></input>
                 </th>
-                <th class="col-sm-3" ng-click="predicate = 'sourceName'; reverse=!reverse">Source <i class="fa fa-sort"></i></th>
+                <th class="col-sm-3" ng-click="predicate = 'sourceName'; reverse=!reverse">Source-xxxx <i class="fa fa-sort"></i></th>
                 <th class="col-sm-3" ng-click="predicate = 'check.name'; reverse=!reverse">Check <i class="fa fa-sort"></i></th>
+                <th class="col-sm-2" ng-click="predicate = 'check.category'; reverse=!reverse">Category<i class="fa fa-sort"></i></th>
+                <th class="col-sm-1" ng-click="predicate = 'check.team'; reverse=!reverse">Team<i class="fa fa-sort"></i></th>
                 <th class="col-sm-4" ng-click="predicate = 'check.output'; reverse=!reverse">Output <i class="fa fa-sort"></i></th>
                 <th class="col-sm-1" ng-click="predicate = 'occurrences'; reverse=!reverse"><i class="fa fa-slack" tooltip-placement="top" tooltip-trigger tooltip="Occurrences"></i> <i class="fa fa-sort"></i></th>
-                <th class="col-dc" ng-click="predicate = 'dc'; reverse=!reverse"><i class="fa fa-cloud" tooltip-placement="top" tooltip-trigger tooltip="Datacenter"></i> <i class="fa fa-sort"></i></th>
-                <th class="col-date" ng-click="predicate = 'check.issued'; reverse=!reverse"><i class='fa fa-clock-o' tooltip-placement="top" tooltip-trigger tooltip="Issued"></i> <i class="fa fa-sort"></i></th>
+                <th class="col-sm-3" ng-click="predicate = 'Timestamp'; reverse=!reverse"><i class="fa fa-slack" tooltip-placement="top" tooltip-trigger tooltip="Timestamp"></i> <i class="fa fa-sort"></i></th>
+                <th class="col-sm-3" ng-click="predicate = 'dc'; reverse=!reverse"><i class="fa fa-cloud" tooltip-placement="top" tooltip-trigger tooltip="Datacenter"></i> <i class="fa fa-sort"></i></th>
+                <th class="col-sm-3" ng-click="predicate = 'check.issued'; reverse=!reverse">Last check<i class='fa fa-sort' tooltip-placement="top" tooltip-trigger tooltip="Issued"></i> </th>
+                <th class="col-sm-3" ng-click="predicate = 'check.status'; reverse=!reverse">Status<i class='fa fa-sort' tooltip-placement="top" tooltip-trigger tooltip="Status"></i> </th>
               </tr>
             </thead>
             <tbody>
@@ -63,12 +54,16 @@
                   </span>
                   <span class="main check-name" tooltip-placement="top" tooltip-trigger tooltip-html="'Subscriptions<br /><small>{{event.check.subscribers|arrayToString}}</small>'">{{ event.check.name }}</span>
                 </td>
-                <td class="output" ng-bind-html="event.check.output | linky" ng-click="openLink($event)"></td>
+		<td class="output" ng-bind-html="event.check.category|linky"></td>
+		<td class="output" ng-bind-html="event.check.team|linky"></td>
+                <td class="output" ng-bind-html="event.check.output|linky" ng-click="openLink($event)"></td>
                 <td>{{ event.occurrences }}</td>
+                <td>{{ event.timestamp }}</td>
                 <td class="dc">{{ event.dc }}</td>
                 <td>
                   <relative-time timestamp="event.check.issued"></relative-time>
                 </td>
+		<td>{{ event.current_time }}</td>
               </tr>
             </tbody>
           </table>
